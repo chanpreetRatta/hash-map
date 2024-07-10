@@ -34,9 +34,20 @@ class HashMap {
 
   get(key) {
     let index = this.#hash(key);
-    if (this._arraySet[index].length <= 1) return this._arraySet[index][0];
+    if (this._arraySet[index].length === 1) return this._arraySet[index][0];
     for (let element of this._arraySet[index]) {
       if (element.key === key) return element;
+    }
+  }
+
+  has(key) {
+    for (let element of this._arraySet) {
+      if (element) return element[0].key === key;
+      else if (element && element.length > 1) {
+        for (let objects of element) {
+          return objects.key === key;
+        }
+      }
     }
   }
 }
@@ -44,4 +55,7 @@ class HashMap {
 let test = new HashMap();
 test.set("Carlos", "this is a value");
 test.set("Carlos", "this is a new value");
-console.log(test.get("Carlos"));
+test.set("Carla", "this is a carla value");
+test.set("Carlaa", "this is a carla value");
+console.log(test._arraySet);
+console.log(test.has("Carlaa"));
