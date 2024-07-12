@@ -50,11 +50,23 @@ class HashMap {
 
   remove(key) {
     let index = this.#hash(key);
-    if (this._arraySet[index][0].key === key) this._arraySet[index] = [];
+    if (!this._arraySet[index]) return false;
+    else if (this._arraySet[index][0].key === key) {
+      this._arraySet[index].splice(0, 1);
+      return true;
+    }
+
+    for (let element in this._arraySet[index]) {
+      if (this._arraySet[index][element].key === key) {
+        this._arraySet[index].splice(element, 1);
+        return true;
+      }
+    }
   }
 }
 
 let test = new HashMap();
 test.set("A", "this is A");
 test.set("Q", "this is Q");
-console.log(test.has("Z"));
+console.log(test.remove("Q"));
+console.log(test._arraySet);
