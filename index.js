@@ -69,10 +69,30 @@ class HashMap {
   get length() {
     return this._arraySize;
   }
+
+  clear() {
+    this._arraySet = [];
+  }
+
+  keys() {
+    let keys = this.entries().map((element) => element[0]);
+
+    return keys;
+  }
+
+  entries() {
+    let entries = [];
+    for (let element of this._arraySet) {
+      if (element) {
+        element.forEach((obj) => entries.push([obj.key, obj.value]));
+      }
+    }
+
+    return entries;
+  }
 }
 
 let test = new HashMap();
 test.set("A", "this is A");
 test.set("Q", "this is Q");
-
-console.log(test.length);
+console.log(test.keys());
