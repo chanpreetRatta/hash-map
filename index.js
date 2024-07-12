@@ -80,6 +80,12 @@ class HashMap {
     return keys;
   }
 
+  values() {
+    let values = this.entries().map((element) => element[1]);
+
+    return values;
+  }
+
   entries() {
     let entries = [];
     for (let element of this._arraySet) {
@@ -95,4 +101,4 @@ class HashMap {
 let test = new HashMap();
 test.set("A", "this is A");
 test.set("Q", "this is Q");
-console.log(test.keys());
+console.log(test.values());
