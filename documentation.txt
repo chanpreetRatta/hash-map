@@ -1,0 +1,69 @@
+The provided code is an implementation of a HashMap class in JavaScript, which mimics the behavior of hash tables. Here is the detailed documentation for each part of the class:
+
+Class: HashMap
+This class is designed to store key-value pairs and provides methods to add, retrieve, check, and remove elements, as well as to handle resizing when the array becomes too full.
+
+Properties
+_bucketArray: An array that holds the elements (key-value pairs).
+_numberOfElements: A counter for the number of elements stored in the hash map.
+_defaultBucketSize: The initial size of the bucket array. It doubles when the array is resized.
+Methods
+constructor()
+
+Initializes _bucketArray as an empty array.
+Sets _numberOfElements to 0.
+Sets _defaultBucketSize to 16.
+#hash(key)
+
+Generates a hash code for a given key.
+Uses a simple hash function that involves a prime number (31) to calculate the hash code.
+Returns the computed hash code, which is an index within the bounds of _defaultBucketSize.
+#resizeArray()
+
+Called internally when the number of elements exceeds 75% of _defaultBucketSize.
+Doubles the size of _defaultBucketSize.
+Clears the existing _bucketArray.
+Rehashes and reinserts all the existing key-value pairs into the new bucket array.
+set(key, value)
+
+Adds or updates a key-value pair in the hash map.
+Checks if resizing is needed (if the load factor exceeds 0.75).
+Computes the index using the #hash method.
+Inserts the key-value pair into the appropriate bucket (handles collisions by chaining).
+Increments _numberOfElements.
+get(key)
+
+Retrieves the value associated with the given key.
+Computes the index using the #hash method.
+Searches for the key in the bucket and returns the key-value pair if found.
+Returns false if the key is not found.
+has(key)
+
+Checks if a given key exists in the hash map.
+Returns true if the key is found, false otherwise.
+remove(key)
+
+Removes the key-value pair associated with the given key.
+Computes the index using the #hash method.
+Searches for the key in the bucket and removes it if found.
+Decrements _numberOfElements.
+Returns true if the key is removed, false otherwise.
+get length
+
+Returns the current number of elements in the hash map.
+clear()
+
+Clears all the elements in the hash map.
+Resets _bucketArray to an empty array.
+keys()
+
+Returns an array of all the keys in the hash map.
+Uses the entries() method to extract keys.
+values()
+
+Returns an array of all the values in the hash map.
+Uses the entries() method to extract values.
+entries()
+
+Returns an array of all the key-value pairs in the hash map.
+Iterates through _bucketArray and collects all key-value pairs.

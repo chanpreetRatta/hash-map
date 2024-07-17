@@ -1,9 +1,11 @@
 class HashMap {
   constructor() {
-    this._bucketArray = [];
+    this._bucketArray = []; // main array to store the elements
     this._numberOfElements = 0;
-    this._defaultBucketSize = 16;
+    this._defaultBucketSize = 16; //default bucket size but this will be doubled every time the array is full through resizeArray method
   }
+
+  // this function will generate the hash/index for the array.
 
   #hash(key) {
     let hashCode = 0;
@@ -17,6 +19,7 @@ class HashMap {
     return hashCode;
   }
 
+  // called through the set method and only and spread the array into the bigger bucket once it is full
   #resizeArray() {
     let entries = this.entries();
     this._defaultBucketSize *= 2;
@@ -114,21 +117,3 @@ class HashMap {
 }
 
 let test = new HashMap();
-
-test.set("apple", "red");
-test.set("banana", "yellow");
-test.set("carrot", "orange");
-test.set("dog", "brown");
-test.set("elephant", "gray");
-test.set("frog", "green");
-test.set("grape", "purple");
-test.set("hat", "black");
-test.set("ice cream", "white");
-test.set("jacket", "blue");
-test.set("kite", "pink");
-test.set("lion", "golden");
-test.set("apple", "green");
-test.set("moon", "silver");
-test.set("asdasda", "silver");
-
-console.log(test._bucketArray);
