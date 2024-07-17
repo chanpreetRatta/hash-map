@@ -1,43 +1,58 @@
 class HashMap {
   constructor() {
-    this._arraySet = [];
-    this._arraySize = 0;
+    this._bucketArray = [];
+    this._numberOfElements = 0;
+    this._defaultBucketSize = 16;
   }
 
-  #hash(key, size = 16) {
+  #hash(key) {
     let hashCode = 0;
-
-    if (this._arraySize > size * 0.75) size = size * 2;
 
     const primeNumber = 31;
     for (let i = 0; i < key.length; i++) {
-      hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % size;
+      hashCode =
+        (primeNumber * hashCode + key.charCodeAt(i)) % this._defaultBucketSize;
     }
 
     return hashCode;
   }
 
-  set(key, value) {
-    let index = this.#hash(key);
-    this._arraySize++;
+  #resizeArray() {
+    let entries = this.entries();
+    this._defaultBucketSize *= 2;
+    this._numberOfElements = 0;
+    this.clear();
 
-    if (this._arraySet[index]) {
-      this._arraySet[index].forEach((element) => {
+    entries.forEach((element) => this.set(element[0], element[1]));
+  }
+
+  set(key, value) {
+    if (this._numberOfElements > this._defaultBucketSize * 0.75)
+      this.#resizeArray();
+
+    let index = this.#hash(key);
+
+    if (this._bucketArray[index]) {
+      this._bucketArray[index].forEach((element) => {
         if (element.key === key) element.value = value;
-        else this._arraySet[index].push({ key, value });
+        else {
+          this._bucketArray[index].push({ key, value });
+          this._numberOfElements++;
+        }
       });
     } else {
-      this._arraySet[index] = [{ key, value }];
+      this._bucketArray[index] = [{ key, value }];
+      this._numberOfElements++;
     }
   }
 
   get(key) {
     let index = this.#hash(key);
-    if (!this._arraySet[index]) return false;
-    else if (this._arraySet[index][0].key === key)
-      return this._arraySet[index][0];
+    if (!this._bucketArray[index]) return false;
+    else if (this._bucketArray[index][0].key === key)
+      return this._bucketArray[index][0];
 
-    for (let element of this._arraySet[index]) {
+    for (let element of this._bucketArray[index]) {
       if (element.key === key) return element;
     }
   }
@@ -50,28 +65,28 @@ class HashMap {
 
   remove(key) {
     let index = this.#hash(key);
-    if (!this._arraySet[index]) return false;
-    else if (this._arraySet[index][0].key === key) {
-      this._arraySet[index].splice(0, 1);
-      this._arraySize--;
+    if (!this._bucketArray[index]) return false;
+    else if (this._bucketArray[index][0].key === key) {
+      this._bucketArray[index].splice(0, 1);
+      this._numberOfElements--;
       return true;
     }
 
-    for (let element in this._arraySet[index]) {
-      if (this._arraySet[index][element].key === key) {
-        this._arraySet[index].splice(element, 1);
-        this._arraySize--;
+    for (let element in this._bucketArray[index]) {
+      if (this._bucketArray[index][element].key === key) {
+        this._bucketArray[index].splice(element, 1);
+        this._numberOfElements--;
         return true;
       }
     }
   }
 
   get length() {
-    return this._arraySize;
+    return this._numberOfElements;
   }
 
   clear() {
-    this._arraySet = [];
+    this._bucketArray = [];
   }
 
   keys() {
@@ -88,7 +103,7 @@ class HashMap {
 
   entries() {
     let entries = [];
-    for (let element of this._arraySet) {
+    for (let element of this._bucketArray) {
       if (element) {
         element.forEach((obj) => entries.push([obj.key, obj.value]));
       }
@@ -99,6 +114,21 @@ class HashMap {
 }
 
 let test = new HashMap();
-test.set("A", "this is A");
-test.set("Q", "this is Q");
-console.log(test.values());
+
+test.set("apple", "red");
+test.set("banana", "yellow");
+test.set("carrot", "orange");
+test.set("dog", "brown");
+test.set("elephant", "gray");
+test.set("frog", "green");
+test.set("grape", "purple");
+test.set("hat", "black");
+test.set("ice cream", "white");
+test.set("jacket", "blue");
+test.set("kite", "pink");
+test.set("lion", "golden");
+test.set("apple", "green");
+test.set("moon", "silver");
+test.set("asdasda", "silver");
+
+console.log(test._bucketArray);
